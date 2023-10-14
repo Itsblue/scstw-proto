@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package ScStw;
+
+message StartCommand {}
+
+message DisableCommand { uint32 laneNumber = 1; }
+
+message FallCommand { uint32 laneNumber = 1; }
+
+message ResetCommand {}
+
+message Command {
+  oneof Command {
+    StartCommand start = 1;
+    DisableCommand disable = 2;
+    FallCommand fall = 3;
+    ResetCommand reset = 4;
+  }
+}

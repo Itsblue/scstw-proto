@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package ScStw;
+
+message LaneFullState {
+  enum State {
+    IDLE = 0;
+    IDLE_FOOT_DOWN = 1;
+    READY_FOOT_DOWN = 2;
+    RUNNING_FOOT_DOWN = 3;
+    RUNNING = 4;
+    FALSE_START = 5;
+    FALSE_START_TIE = 6;
+    WILDCARD = 7;
+    FINISHED = 8;
+    FINISHED_WINNER = 9;
+    FINISHED_TIE = 10;
+    FALL = 11;
+    DISABLED = 12;
+  }
+  State state = 1;
+  uint32 reactionTime = 2;
+  uint32 climbingTime = 3;
+}
+
+message RaceFullState {
+  enum State {
+    IDLE = 0;
+    IDLE_CLEAR_TO_START = 1;
+    STARTING = 2;
+    RUNNING = 3;
+    FINISHED = 4;
+    FINISHED_MUTED = 5;
+  }
+  State state = 1;
+  repeated LaneFullState laneStates = 2;
+}
