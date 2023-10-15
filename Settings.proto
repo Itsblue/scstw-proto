@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package ScStw;
+
+message ManualStartProcedureSettings {}
+
+message AutomatedStartProcedureSettings {
+  bool sayReady = 1;
+  int32 standstillDurationBeforeReady = 2;
+}
+
+message StartProcedureSettings {
+  oneof startProcedureSettings {
+    ManualStartProcedureSettings manualStartProcedureSettings = 1;
+    AutomatedStartProcedureSettings automatedStartProcedureSettings = 2;
+  }
+}
+
+message LaneSettings {
+  string letter = 1;
+  bool disable = 2;
+}
+
+message SoundSettings { uint32 volume = 1; }
+
+message RaceSettings {
+  StartProcedureSettings startProcedure = 1;
+  repeated LaneSettings lanes = 2;
+}
+
+message Settings {
+  // if the settings are stored as default in the flash memory
+  bool default = 1;
+  RaceSettings race = 2;
+  SoundSettings sound = 3;
+}
