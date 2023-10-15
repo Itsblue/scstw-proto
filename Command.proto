@@ -4,7 +4,10 @@ package ScStw;
 
 message RaceStartCommand {}
 
-message LaneSetDisabledCommand { uint32 laneNumber = 1; }
+message LaneSetDisabledCommand {
+  uint32 laneNumber = 1;
+  bool disabled = 2;
+}
 
 message LaneSetFallCommand { uint32 laneNumber = 1; }
 
