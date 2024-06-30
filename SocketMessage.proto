@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package ScStw;
+
+import "RaceState.proto";
+import "Command.proto";
+import "Settings.proto";
+
+message SocketMessage {
+  oneof message {
+    RaceState raceState = 1;
+    Command command = 2;
+    Settings settings = 3;
+  }
+}
