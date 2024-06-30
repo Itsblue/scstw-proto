@@ -8,7 +8,7 @@ import "Settings.proto";
 
 message SocketMessage {
   oneof message {
-    RaceState raceState = 1;
+    RaceFullState raceFullState = 1;
     Command command = 2;
     Settings settings = 3;
   }
