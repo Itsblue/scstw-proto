@@ -21,6 +21,13 @@ message LaneFullState {
   State state = 1;
   uint32 reactionTime = 2;
   uint32 climbingTime = 3;
+
+  // This is only relevant in training mode!
+  // If this stays `true` for at least the configured autostart
+  // standstillDurationBeforeStart, an autostart will be executed.
+  // Once this becomes true, clients should display indicate it and
+  // optionally show a countdown.
+  bool autostartPending = 4;
 }
 
 message RaceFullState {
