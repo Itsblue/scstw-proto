@@ -100,7 +100,7 @@ message Settings {
 
   // DEPRECATED, just kept for compatibility, use TimerMode instead!
   // Will be ignored when TimerMode is set
-  TrainingClassicRaceMode trainingClassicRaceMode = 2 [ deprecated = true ];
+  TrainingClassicRaceMode race = 2 [ deprecated = true ];
 
   SoundSettings sound = 3;
   TimerMode timerMode = 4;
