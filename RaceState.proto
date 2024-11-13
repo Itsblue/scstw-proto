@@ -2,6 +2,27 @@ syntax = "proto3";
 
 package ScStw;
 
+message TrainingClassicRaceExtraState {
+  // If this stays `true` for at least the configured autostart
+  // standstillDurationBeforeStart, an autostart will be executed.
+  // Once this becomes true, clients should display indicate it and
+  // optionally show a countdown.
+  bool autostartPending = 1;
+
+  // If this is `true`, the time is calculated and the valid.
+  // This happens when the athlete does a false start but still finishes.
+  // In this case, the client should mark the time as invalid.
+  bool timeIsCalculated = 2;
+}
+
+message LaneExtraState {
+  oneof state {
+    TrainingClassicRaceExtraState trainingClassicRaceExtraState = 1;
+    // TODO CompetitionRelayExtraState competitionRelayMode = 2;
+    // TODO Competition4SpeedExtraState competition4SpeedMode = 3;
+  }
+}
+
 message LaneFullState {
   enum State {
     IDLE = 0;
@@ -22,12 +43,7 @@ message LaneFullState {
   uint32 reactionTime = 2;
   uint32 climbingTime = 3;
 
-  // This is only relevant in training mode!
-  // If this stays `true` for at least the configured autostart
-  // standstillDurationBeforeStart, an autostart will be executed.
-  // Once this becomes true, clients should display indicate it and
-  // optionally show a countdown.
-  bool autostartPending = 4;
+  LaneExtraState extraState = 4;
 }
 
 message RaceFullState {

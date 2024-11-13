@@ -2,35 +2,107 @@ syntax = "proto3";
 
 package ScStw;
 
-message ManualStartProcedureSettings {}
-
-message AutomatedStartProcedureSettings {
-  bool sayReady = 1;
-  int32 standstillDurationBeforeReady = 2;
+message SoundSettings {
+  // Software volume control, between 0 and 254
+  uint32 volume = 1;
+  bool muteInternalSpeaker = 2;
 }
 
-message StartProcedureSettings {
-  oneof startProcedureSettings {
-    ManualStartProcedureSettings manualStartProcedureSettings = 1;
-    AutomatedStartProcedureSettings automatedStartProcedureSettings = 2;
+message SecuritySettings {
+  // If set to true, the bluetooth interface won't be initialized on startup
+  // This can only be changed over a web socket connection to avoid lockout
+  // At least one lane must be enabled. Otherwise, the first lane will be
+  // enabled!
+  bool disableBluetooth = 1;
+}
+
+//
+// TimerMode
+//
+
+// = Competition classic race =
+message ManualStartProcedure {
+  // If set to true, the timer will play the "Ready" sound before starting when
+  // RaceStartCommand is sent.
+  bool sayReady = 1;
+}
+
+message CompetitionClassicRaceMode {
+  ManualStartProcedure manualStartProcedure = 1;
+}
+
+// = Training classic race =
+message AutomatedStartProcedure {
+  bool sayReady = 1;
+  int32 standstillDurationBeforeStart = 2;
+  bool autoReset = 3;
+}
+
+message StartProcedure {
+  oneof startProcedure {
+    ManualStartProcedure manualStartProcedure = 1;
+    AutomatedStartProcedure automatedStartProcedure = 2;
   }
 }
 
 message LaneSettings {
-  string letter = 1;
-  bool disable = 2;
+  reserved 1; // Deprecated "letter"
+  // If set to true, the lane won't be usable and won't show up in the UI
+  // Can be used if there is only a single lane in the gym
+  bool disabled = 2;
 }
 
-message SoundSettings { uint32 volume = 1; }
+message AbortAfterFalseStart {}
+message ContinueAfterFalseStart {
+  // This time will be assumed as the reaction time when calculating the final
+  // time
+  uint32 assumedReactionTime = 1;
+  // If set to true, there will be no false start tone and the normal tone will
+  // continue Also, the indicator of wildcard lanes will continue as normal
+  bool continueStartSequenceAfterFalseStart = 2;
+}
 
-message RaceSettings {
-  StartProcedureSettings startProcedure = 1;
+message FalseStartBehaviour {
+  oneof behaviour {
+    AbortAfterFalseStart abortAfterFalseStart = 1;
+    ContinueAfterFalseStart continueAfterFalseStart = 2;
+  }
+}
+
+message FalseStartSettings {
+  FalseStartBehaviour behaviour = 1;
+  uint32 soundDuration = 2;
+  bool muteIndicators = 3;
+}
+
+message TrainingClassicRaceMode {
+  StartProcedure startProcedure = 1;
+  // The number of lanes cannot be changed by the client
   repeated LaneSettings lanes = 2;
+  FalseStartSettings falseStartSettings = 3;
+
+  // Software brightness control, between 0 and 254
+  uint32 indicatorBrightness = 4;
+}
+
+message TimerMode {
+  oneof mode {
+    CompetitionClassicRaceMode competitionClassicRaceMode = 1;
+    TrainingClassicRaceMode trainingClassicRaceMode = 2;
+    // TODO CompetitionRelayMode competitionRelayMode = 3;
+    // TODO Competition4SpeedMode competition4SpeedMode = 4;
+  }
 }
 
 message Settings {
   // if the settings are stored as default in the flash memory
   bool default = 1;
-  RaceSettings race = 2;
+
+  // DEPRECATED, just kept for compatibility, use TimerMode instead!
+  // Will be ignored when TimerMode is set
+  TrainingClassicRaceMode trainingClassicRaceMode = 2 [ deprecated = true ];
+
   SoundSettings sound = 3;
+  TimerMode timerMode = 4;
+  SecuritySettings securitySettings = 5;
 }
