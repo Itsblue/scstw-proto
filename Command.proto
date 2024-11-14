@@ -15,6 +15,8 @@ message RaceResetCommand {}
 
 message RebootCommand {}
 
+message SayAtYourMarksCommand {}
+
 message Command {
   oneof command {
     RaceStartCommand start = 1;
@@ -22,5 +24,6 @@ message Command {
     LaneSetFallCommand fall = 3;
     RaceResetCommand reset = 4;
     RebootCommand reboot = 5;
+    SayAtYourMarksCommand sayAtYourMarks = 6;
   }
 }
