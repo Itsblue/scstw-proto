@@ -17,6 +17,9 @@ message RebootCommand {}
 
 message SayAtYourMarksCommand {}
 
+// sets the race from FINISHED to FINISHED_MUTED, only works in FINISHED state
+message MuteFalseStartSoundCommand {}
+
 message Command {
   oneof command {
     RaceStartCommand start = 1;
@@ -25,5 +28,6 @@ message Command {
     RaceResetCommand reset = 4;
     RebootCommand reboot = 5;
     SayAtYourMarksCommand sayAtYourMarks = 6;
+    MuteFalseStartSoundCommand muteFalseStartSound = 7;
   }
 }
