@@ -72,7 +72,19 @@ message FalseStartBehaviour {
 message FalseStartSettings {
   FalseStartBehaviour behaviour = 1;
   uint32 soundDuration = 2;
-  bool muteIndicators = 3;
+}
+
+message IndicatorSettings {
+  // Software brightness control, between 0 and 254
+  uint32 brightness = 1;
+  // If set to true, the indicator will stop blinkng as soon as the false start
+  // sound stops (when a false start exists and race is in FINISHED_MUTED
+  // state). Otherwise, it will continue blinking until the race is reset
+  bool turnOffWhenFalseStartSoundIsMuted = 2;
+
+  // If set to true, the indicator will trun off when race is IDLE state.
+  // Otherwise, it will be red
+  bool turnOffWhenIdle = 3;
 }
 
 message TrainingClassicRaceMode {
@@ -80,9 +92,7 @@ message TrainingClassicRaceMode {
   // The number of lanes cannot be changed by the client
   repeated LaneSettings lanes = 2;
   FalseStartSettings falseStartSettings = 3;
-
-  // Software brightness control, between 0 and 254
-  uint32 indicatorBrightness = 4;
+  IndicatorSettings indicatorSettings = 4;
 }
 
 message TimerMode {
