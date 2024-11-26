@@ -14,6 +14,9 @@ message SecuritySettings {
   // At least one lane must be enabled. Otherwise, the first lane will be
   // enabled!
   bool disableBluetooth = 1;
+
+  // If set to true, the default settings can't be set via bluetooth
+  bool disallowToSetDefaultViaBluetooth = 2;
 }
 
 //
