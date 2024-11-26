@@ -9,13 +9,14 @@ message SoundSettings {
 }
 
 message SecuritySettings {
-  // If set to true, the bluetooth interface won't be initialized on startup
-  // This can only be changed over a web socket connection to avoid lockout
-  // At least one lane must be enabled. Otherwise, the first lane will be
-  // enabled!
+  // If set to true, the bluetooth interface won't be initialized on startup.
+  // This can only be changed over a web socket connection to avoid lockout.
+  // To be effective, the settings must be stored as default and device must be
+  // rebooted!
   bool disableBluetooth = 1;
 
-  // If set to true, the default settings can't be set via bluetooth
+  // If set to true, the default settings can't be set via bluetooth.
+  // This can only be changed over a web socket connection to avoid lockout.
   bool disallowToSetDefaultViaBluetooth = 2;
 }
 
@@ -50,18 +51,20 @@ message StartProcedure {
 
 message LaneSettings {
   reserved 1; // Deprecated "letter"
-  // If set to true, the lane won't be usable and won't show up in the UI
-  // Can be used if there is only a single lane in the gym
+  // If set to true, the lane won't be usable and won't show up in the UI.
+  // Can be used if there is only a single lane in the gym.
+  // At least one lane must be enabled. Otherwise, the first lane will be
+  // enabled!
   bool disabled = 2;
 }
 
 message AbortAfterFalseStart {}
 message ContinueAfterFalseStart {
   // This time will be assumed as the reaction time when calculating the final
-  // time
+  // time.
   uint32 assumedReactionTime = 1;
   // If set to true, there will be no false start tone and the normal tone will
-  // continue Also, the indicator of wildcard lanes will continue as normal
+  // continue. Also, the indicator of wildcard lanes will continue as normal.
   bool continueStartSequenceAfterFalseStart = 2;
 }
 
@@ -78,21 +81,21 @@ message FalseStartSettings {
 }
 
 message IndicatorSettings {
-  // Software brightness control, between 0 and 254
+  // Software brightness control, between 0 and 254.
   uint32 brightness = 1;
   // If set to true, the indicator will stop blinkng as soon as the false start
   // sound stops (when a false start exists and race is in FINISHED_MUTED
-  // state). Otherwise, it will continue blinking until the race is reset
+  // state). Otherwise, it will continue blinking until the race is reset.
   bool turnOffWhenFalseStartSoundIsMuted = 2;
 
   // If set to true, the indicator will trun off when race is IDLE state.
-  // Otherwise, it will be red
+  // Otherwise, it will be red.
   bool turnOffWhenIdle = 3;
 }
 
 message TrainingClassicRaceMode {
   StartProcedure startProcedure = 1;
-  // The number of lanes cannot be changed by the client
+  // The number of lanes cannot be changed by the client.
   repeated LaneSettings lanes = 2;
   FalseStartSettings falseStartSettings = 3;
   IndicatorSettings indicatorSettings = 4;
@@ -108,11 +111,11 @@ message TimerMode {
 }
 
 message Settings {
-  // if the settings are stored as default in the flash memory
+  // if the settings are stored as default in the flash memory.
   bool default = 1;
 
   // DEPRECATED, just kept for compatibility, use TimerMode instead!
-  // Will be ignored when TimerMode is set
+  // Will be ignored when TimerMode is set.
   TrainingClassicRaceMode race = 2 [ deprecated = true ];
 
   SoundSettings sound = 3;
