@@ -3,7 +3,7 @@ syntax = "proto3";
 package ScStw;
 
 message SoundSettings {
-  // Software volume control, between 0 and 254
+  // Software volume control. Maximum value is 254, default value is 254.
   uint32 volume = 1;
   bool muteInternalSpeaker = 2;
 }
@@ -38,7 +38,11 @@ message CompetitionClassicRaceMode {
 // = Training classic race =
 message AutomatedStartProcedure {
   bool sayReady = 1;
+  // The duration in milliseconds a startpad has to be pressed before the
+  // autostart is executed. Maximum value is 10000, default value is 3000.
   int32 standstillDurationBeforeStart = 2;
+  // If set to true, the autostart will be executed even if the race is not in
+  // IDLE_CLEAR_TO_START state.
   bool autoReset = 3;
 }
 
@@ -61,7 +65,7 @@ message LaneSettings {
 message AbortAfterFalseStart {}
 message ContinueAfterFalseStart {
   // This time will be assumed as the reaction time when calculating the final
-  // time.
+  // time. Maximum value is 10000, default value is 100.
   uint32 assumedReactionTime = 1;
   // If set to true, there will be no false start tone and the normal tone will
   // continue. Also, the indicator of wildcard lanes will continue as normal.
@@ -77,18 +81,20 @@ message FalseStartBehaviour {
 
 message FalseStartSettings {
   FalseStartBehaviour behaviour = 1;
+  // The duration in milliseconds the false start sound will be played before it
+  // is automatically muted. Maximum value is 60000, default value is 2000.
   uint32 soundDuration = 2;
 }
 
 message IndicatorSettings {
-  // Software brightness control, between 0 and 254.
+  // Software brightness control. Maximum value is 254, default value is 254.
   uint32 brightness = 1;
   // If set to true, the indicator will stop blinkng as soon as the false start
   // sound stops (when a false start exists and race is in FINISHED_MUTED
   // state). Otherwise, it will continue blinking until the race is reset.
   bool turnOffWhenFalseStartSoundIsMuted = 2;
 
-  // If set to true, the indicator will trun off when race is IDLE state.
+  // If set to true, the indicator will turn off when the race is in IDLE state.
   // Otherwise, it will be red.
   bool turnOffWhenIdle = 3;
 }
@@ -115,7 +121,9 @@ message Settings {
   bool default = 1;
 
   // DEPRECATED, just kept for compatibility, use StopwatchSettings instead!
-  // Will be ignored when StopwatchSettings is set.
+  // Will be ignored when StopwatchSettings is set and converted to
+  // StopwatchSettings otherwise.
+  // For backwards compatibility, this is always set when reading the settings.
   TrainingClassicRaceMode race = 2 [ deprecated = true ];
 
   SoundSettings sound = 3;
