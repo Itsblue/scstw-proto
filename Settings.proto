@@ -21,13 +21,13 @@ message SecuritySettings {
 }
 
 //
-// TimerMode
+// StopwatchSettings
 //
 
 // = Competition classic race =
 message ManualStartProcedure {
-  // If set to true, the timer will play the "Ready" sound before starting when
-  // RaceStartCommand is sent.
+  // If set to true, the stopwatch will play the "Ready" sound before starting
+  // when RaceStartCommand is sent.
   bool sayReady = 1;
 }
 
@@ -101,7 +101,7 @@ message TrainingClassicRaceMode {
   IndicatorSettings indicatorSettings = 4;
 }
 
-message TimerMode {
+message StopwatchSettings {
   oneof mode {
     CompetitionClassicRaceMode competitionClassicRaceMode = 1;
     TrainingClassicRaceMode trainingClassicRaceMode = 2;
@@ -114,11 +114,11 @@ message Settings {
   // if the settings are stored as default in the flash memory.
   bool default = 1;
 
-  // DEPRECATED, just kept for compatibility, use TimerMode instead!
-  // Will be ignored when TimerMode is set.
+  // DEPRECATED, just kept for compatibility, use StopwatchSettings instead!
+  // Will be ignored when StopwatchSettings is set.
   TrainingClassicRaceMode race = 2 [ deprecated = true ];
 
   SoundSettings sound = 3;
-  TimerMode timerMode = 4;
+  StopwatchSettings stopwatchSettings = 4;
   SecuritySettings securitySettings = 5;
 }
