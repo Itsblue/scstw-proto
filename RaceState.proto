@@ -40,7 +40,16 @@ message LaneFullState {
     DISABLED = 12;
   }
   State state = 1;
+
+  // The reaction time in milliseconds relative to the beginning of the start
+  // sequence. To get the common representation of the reaction time (relative
+  // to the beginning of the third beep), 3000ms must be subtracted.
+  // If this is 0, the reaction time is not set (yet).
   uint32 reactionTime = 2;
+
+  // The climbing time in milliseconds relative to the beginning of the third
+  // beep.
+  // If this is 0, the climbing time is not set (yet).
   uint32 climbingTime = 3;
 
   LaneExtraState extraState = 4;
